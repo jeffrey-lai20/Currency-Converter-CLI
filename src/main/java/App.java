@@ -23,21 +23,57 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Currency App");
-        GridPane grid = new GridPane();
-        grid.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
-        grid.setPadding(new Insets(10, 20, 20, 20));
-        grid.setVgap(15);
-        grid.setHgap(20);
+
+        GridPane homePage = new GridPane();
+        homePage.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
+        homePage.setPadding(new Insets(10, 20, 20, 20));
+        homePage.setVgap(15);
+        homePage.setHgap(20);
+
+        Text homeTitle = new Text("Agile_Team43");
+        homeTitle.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        homePage.add(homeTitle, 0, 0, 2, 1);
+
+        Button oneToOne = new Button("Convert One Currency");
+        homePage.add(oneToOne, 1, 2);
+        oneToOne.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                oneToOneConverter(primaryStage);
+            }
+        });
+
+        Button manyToOne = new Button("Convert Three Currencies to One");
+        homePage.add(manyToOne, 3, 2);
+        manyToOne.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                manyToOneConverter(primaryStage);
+            }
+        });
+
+        Scene scene = new Scene(homePage, 1080, 720);
+        primaryStage.setScene(scene);
+//        scene.getStylesheets().add(getClass().getResource("/App,css").toExternalForm());
+        primaryStage.show();
+    }
+
+    private void oneToOneConverter(Stage primaryStage) {
+        GridPane oneToOneGrid = new GridPane();
+        oneToOneGrid.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
+        oneToOneGrid.setPadding(new Insets(10, 20, 20, 20));
+        oneToOneGrid.setVgap(15);
+        oneToOneGrid.setHgap(20);
 
         Text title = new Text("Agile_Team43");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        grid.add(title, 0, 0, 2, 1);
+        oneToOneGrid.add(title, 0, 0, 2, 1);
 
         Label amount = new Label("Amount");
-        grid.add(amount, 0, 1);
+        oneToOneGrid.add(amount, 0, 1);
 
         TextField firstCurrencyAmount = new TextField();
-        grid.add(firstCurrencyAmount, 1, 1);
+        oneToOneGrid.add(firstCurrencyAmount, 1, 1);
 
         ObservableList<String> currencies = FXCollections.observableArrayList(
                 "USD ($)",
@@ -46,37 +82,53 @@ public class App extends Application {
                 "EUR (€)",
                 "JPY (¥)"
         );
-        final ComboBox currencySymbols = new ComboBox();
-        currencySymbols.setItems(currencies);
-        grid.add(currencySymbols, 2,1);
+        final ComboBox fromCurrencySymbols = new ComboBox();
+        fromCurrencySymbols.setItems(currencies);
+        oneToOneGrid.add(fromCurrencySymbols, 2,1);
+
+        Label to = new Label("to");
+        oneToOneGrid.add(to, 3, 1);
+
+        final ComboBox toCurrencySymbols = new ComboBox();
+        toCurrencySymbols.setItems(currencies);
+        oneToOneGrid.add(toCurrencySymbols, 4, 1);
+
 
         Button convertBtn = new Button("Convert");
         HBox btn = new HBox(0);
         btn.setAlignment(Pos.BOTTOM_RIGHT);
         btn.getChildren().add(convertBtn);
-        grid.add(btn, 1, 4);
+        oneToOneGrid.add(btn, 1, 4);
 
         Text response = new Text();
-        grid.add(response, 2 ,0);
+        oneToOneGrid.add(response, 2 ,7);
 
         convertBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                response.setFill(Color.BLACK);
-                response.setText(firstCurrencyAmount.getText());
+                if (firstCurrencyAmount.getText().trim().isEmpty()) {
+                    response.setFill(Color.RED);
+                    response.setText("Amount field cannot be empty");
+                } else {
+                    // Currency Coversion Calculations Here
 
-                // Currency Coversion Calculations Here
+                    Text convertedCurrency = new Text();
+                    convertedCurrency.setText(firstCurrencyAmount.getText());
+                    oneToOneGrid.add(convertedCurrency, 2, 4);
+                }
 
-                Text convertedCurrency = new Text();
-                convertedCurrency.setText(firstCurrencyAmount.getText());
-                grid.add(convertedCurrency, 2, 4);
             }
         });
 
-        Scene scene = new Scene(grid, 1080, 720, Color.CRIMSON);
-        primaryStage.setScene(scene);
-//        scene.getStylesheets().add(getClass().getResource("/App,css").toExternalForm());
-        primaryStage.show();
+
+        Scene oneToOneScene = new Scene(oneToOneGrid, 1080, 720);
+        primaryStage.setScene(oneToOneScene);
+    }
+
+    private void manyToOneConverter(Stage primaryStage) {
+        GridPane manyToOneGrid = new GridPane();
+        Scene manyToOneScene = new Scene(manyToOneGrid, 1080, 720);
+        primaryStage.setScene(manyToOneScene);
     }
 
     public static void main(String[] args) {
