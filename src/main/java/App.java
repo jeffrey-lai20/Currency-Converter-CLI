@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -60,6 +61,7 @@ public class App extends Application {
 
     private void oneToOneConverter(Stage primaryStage) {
         GridPane oneToOneGrid = new GridPane();
+//        oneToOneGrid.setGridLinesVisible(true);
         oneToOneGrid.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
         oneToOneGrid.setPadding(new Insets(10, 20, 20, 20));
         oneToOneGrid.setVgap(15);
@@ -93,16 +95,12 @@ public class App extends Application {
         toCurrencySymbols.setItems(currencies);
         oneToOneGrid.add(toCurrencySymbols, 4, 1);
 
+        Text response = new Text();
+        response.setLayoutX(50);
+        response.setLayoutY(200);
 
         Button convertBtn = new Button("Convert");
-        HBox btn = new HBox(0);
-        btn.setAlignment(Pos.BOTTOM_RIGHT);
-        btn.getChildren().add(convertBtn);
-        oneToOneGrid.add(btn, 1, 4);
-
-        Text response = new Text();
-        oneToOneGrid.add(response, 2 ,7);
-
+        oneToOneGrid.add(convertBtn, 1, 3);
         convertBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -111,17 +109,17 @@ public class App extends Application {
                     response.setText("Amount field cannot be empty");
                 } else {
                     // Currency Coversion Calculations Here
-
+                    response.setText("");
                     Text convertedCurrency = new Text();
                     convertedCurrency.setText(firstCurrencyAmount.getText());
                     oneToOneGrid.add(convertedCurrency, 2, 4);
                 }
-
             }
         });
 
+        Group oneToOneGroup = new Group(oneToOneGrid, response);
+        Scene oneToOneScene = new Scene(oneToOneGroup, 1080, 720, Color.BEIGE);
 
-        Scene oneToOneScene = new Scene(oneToOneGrid, 1080, 720);
         primaryStage.setScene(oneToOneScene);
     }
 
