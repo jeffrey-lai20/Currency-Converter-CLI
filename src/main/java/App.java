@@ -20,9 +20,15 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class App extends Application {
+    private List<Currency> currencyExchangeRates = new ArrayList<Currency>();
     @Override
     public void start(Stage primaryStage) throws Exception {
+        initializeCurrencies();
+
         primaryStage.setTitle("Currency App");
 
         GridPane homePage = new GridPane();
@@ -53,9 +59,11 @@ public class App extends Application {
             }
         });
 
+        showCurrencyRates(homePage);
+
         Scene scene = new Scene(homePage, 1080, 720);
         primaryStage.setScene(scene);
-//        scene.getStylesheets().add(getClass().getResource("/App,css").toExternalForm());
+//        scene.getStylesheets().add(getClass().getResource("/App.css").toExternalForm());
         primaryStage.show();
     }
 
@@ -80,12 +88,13 @@ public class App extends Application {
         ObservableList<String> currencies = FXCollections.observableArrayList(
                 "USD ($)",
                 "AUD (A$)",
-                "GBP (£)",
-                "EUR (€)",
-                "JPY (¥)"
+                "GBP (\u00a3)",
+                "EUR (\u20ac)",
+                "JPY (\u00a5)"
         );
         final ComboBox fromCurrencySymbols = new ComboBox();
         fromCurrencySymbols.setItems(currencies);
+        fromCurrencySymbols.getSelectionModel().selectFirst();
         oneToOneGrid.add(fromCurrencySymbols, 2,1);
 
         Label to = new Label("to");
@@ -93,6 +102,7 @@ public class App extends Application {
 
         final ComboBox toCurrencySymbols = new ComboBox();
         toCurrencySymbols.setItems(currencies);
+        toCurrencySymbols.getSelectionModel().select(1);
         oneToOneGrid.add(toCurrencySymbols, 4, 1);
 
         Text response = new Text();
@@ -117,6 +127,8 @@ public class App extends Application {
             }
         });
 
+        showCurrencyRates(oneToOneGrid);
+
         Group oneToOneGroup = new Group(oneToOneGrid, response);
         Scene oneToOneScene = new Scene(oneToOneGroup, 1080, 720, Color.BEIGE);
 
@@ -127,6 +139,124 @@ public class App extends Application {
         GridPane manyToOneGrid = new GridPane();
         Scene manyToOneScene = new Scene(manyToOneGrid, 1080, 720);
         primaryStage.setScene(manyToOneScene);
+    }
+
+    private void showCurrencyRates(GridPane grid) {
+        int gridStartCol = 8;
+        int gridStartRow = 3;
+        Text exchangeTableTitle = new Text("Currency Exchange Rates");
+        exchangeTableTitle.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        grid.add(exchangeTableTitle, 7, 0, 6, 1);
+
+        Text usd = new Text("USD($)");
+        grid.add(usd, 8, 2);
+        Text gbp = new Text("GBP(\u00a3)");
+        grid.add(gbp, 9, 2);
+        Text aud = new Text("AUD(A$)");
+        grid.add(aud, 10, 2);
+        Text eur = new Text("EUR(\u20ac)");
+        grid.add(eur, 11, 2);
+        Text jpy = new Text("JPY(\u00a5)");
+        grid.add(jpy, 12, 2);
+
+        Text oneUsd = new Text("1 USD($)");
+        grid.add(oneUsd, 7, 3);
+        Text oneGbp = new Text("1 GBP(\u00a3)");
+        grid.add(oneGbp, 7, 4);
+        Text oneAud = new Text("1 AUD(A$)");
+        grid.add(oneAud, 7, 5);
+        Text oneEur = new Text("1 EUR(\u20ac)");
+        grid.add(oneEur, 7, 6);
+        Text oneJpy = new Text("1 JPY(\u00a5)");
+        grid.add(oneJpy, 7, 7);
+
+        int idx = 0;
+        for (int i = gridStartCol; i < gridStartCol+5; i++) {
+            for (int j = gridStartRow; j < gridStartRow+5; j++) {
+                grid.add(new Text(Double.toString(currencyExchangeRates.get(idx).getExchangeValue())), i, j);
+                idx++;
+            }
+        }
+
+//        grid.setGridLinesVisible(true);
+
+
+    }
+
+    private void initializeCurrencies() {
+        Currency USDUSD =  new Currency("USD", "USD", 1);
+        currencyExchangeRates.add(USDUSD);
+        Currency USDGBP =  new Currency("USD", "GBP", 0.83102);
+        currencyExchangeRates.add(USDGBP);
+        Currency USDAUD =  new Currency("USD", "AUD", 1.49417);
+        currencyExchangeRates.add(USDAUD);
+        Currency USDEUR =  new Currency("USD", "EUR", 0.91431);
+        currencyExchangeRates.add(USDEUR);
+        Currency USDJPY =  new Currency("USD", "JPY", 106.306);
+        currencyExchangeRates.add(USDJPY);
+        Currency GBPUSD =  new Currency("GBP", "USD", 0.91431);
+        currencyExchangeRates.add(GBPUSD);
+        Currency GBPGBP =  new Currency("GBP", "GBP", 1);
+        currencyExchangeRates.add(GBPGBP);
+        Currency GBPAUD =  new Currency("GBP", "AUD", 1.79802);
+        currencyExchangeRates.add(GBPAUD);
+        Currency GBPEUR =  new Currency("GBP", "EUR", 1.1009);
+        currencyExchangeRates.add(GBPEUR);
+        Currency GBPJPY =  new Currency("GBP", "JPY", 127.924);
+        currencyExchangeRates.add(GBPJPY);
+        Currency AUDUSD =  new Currency("AUD", "USD", 0.66932);
+        currencyExchangeRates.add(AUDUSD);
+        Currency AUDGBP =  new Currency("AUD", "GBP", 0.55621);
+        currencyExchangeRates.add(AUDGBP);
+        Currency AUDAUD =  new Currency("AUD", "AUD", 1);
+        currencyExchangeRates.add(AUDAUD);
+        Currency AUDEUR =  new Currency("AUD", "EUR", 0.61188);
+        currencyExchangeRates.add(AUDEUR);
+        Currency AUDJPY =  new Currency("AUD", "JPY", 71.1491);
+        currencyExchangeRates.add(AUDJPY);
+        Currency EURUSD =  new Currency("EUR", "USD", 1.09372);
+        currencyExchangeRates.add(EURUSD);
+        Currency EURGBP =  new Currency("EUR", "GBP", 0.90889);
+        currencyExchangeRates.add(EURGBP);
+        Currency EURAUD =  new Currency("EUR", "AUD", 1.63421);
+        currencyExchangeRates.add(EURAUD);
+        Currency EUREUR =  new Currency("EUR", "EUR", 1);
+        currencyExchangeRates.add(EUREUR);
+        Currency EURJPY =  new Currency("EUR", "JPY", 116.270);
+        currencyExchangeRates.add(EURJPY);
+        Currency JPYUSD =  new Currency("JPY", "USD", 0.00941);
+        currencyExchangeRates.add(JPYUSD);
+        Currency JPYGBP =  new Currency("JPY", "GBP", 0.00782);
+        currencyExchangeRates.add(JPYGBP);
+        Currency JPYAUD =  new Currency("JPY", "AUD", 0.01405);
+        currencyExchangeRates.add(JPYAUD);
+        Currency JPYEUR =  new Currency("JPY", "EUR", 0.00860);
+        currencyExchangeRates.add(JPYEUR);
+        Currency JPYJPY =  new Currency("JPY", "JPY", 1);
+        currencyExchangeRates.add(JPYJPY);
+    }
+
+    class Currency {
+        private String from;
+        private String to;
+        private double exchangeValue;
+        public Currency(String f, String t, double exchangeVal) {
+            this.from = f;
+            this.to = t;
+            this.exchangeValue = exchangeVal;
+        }
+
+        public String getFrom() {
+            return this.from;
+        }
+
+        public String getTo() {
+            return this.to;
+        }
+
+        public double getExchangeValue() {
+            return this.exchangeValue;
+        }
     }
 
     public static void main(String[] args) {
