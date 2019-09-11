@@ -145,29 +145,39 @@ public class App extends Application {
         int gridStartCol = 8;
         int gridStartRow = 3;
         Text exchangeTableTitle = new Text("Currency Exchange Rates");
-        exchangeTableTitle.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        grid.add(exchangeTableTitle, 7, 0, 6, 1);
+        exchangeTableTitle.setFont(Font.font("Arial", FontWeight.BOLD, 21));
+        grid.add(exchangeTableTitle, 8, 0, 6, 1);
 
-        Text usd = new Text("USD($)");
+        Text usd = new Text("USD ($)");
+        usd.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(usd, 8, 2);
-        Text gbp = new Text("GBP(\u00a3)");
+        Text gbp = new Text("GBP (\u00a3)");
+        gbp.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(gbp, 9, 2);
-        Text aud = new Text("AUD(A$)");
+        Text aud = new Text("AUD (A$)");
+        aud.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(aud, 10, 2);
-        Text eur = new Text("EUR(\u20ac)");
+        Text eur = new Text("EUR (\u20ac)");
+        eur.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(eur, 11, 2);
-        Text jpy = new Text("JPY(\u00a5)");
+        Text jpy = new Text("JPY (\u00a5)");
+        jpy.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(jpy, 12, 2);
 
         Text oneUsd = new Text("1 USD($)");
+        oneUsd.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(oneUsd, 7, 3);
         Text oneGbp = new Text("1 GBP(\u00a3)");
+        oneGbp.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(oneGbp, 7, 4);
         Text oneAud = new Text("1 AUD(A$)");
+        oneAud.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(oneAud, 7, 5);
         Text oneEur = new Text("1 EUR(\u20ac)");
+        oneEur.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(oneEur, 7, 6);
         Text oneJpy = new Text("1 JPY(\u00a5)");
+        oneJpy.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         grid.add(oneJpy, 7, 7);
 
         int idx = 0;
