@@ -202,19 +202,19 @@ public class App extends Application {
                     
                     // JPY CONVERSIONS
                     if (selectedFrom.equals("USD ($)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(15).getExchangeValue();
+                        exchangeValue = currencyExchangeRates.get(20).getExchangeValue();
                     }
                     if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(16).getExchangeValue();
+                        exchangeValue = currencyExchangeRates.get(21).getExchangeValue();
                     }
                     if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(17).getExchangeValue();
+                        exchangeValue = currencyExchangeRates.get(22).getExchangeValue();
                     }
                     if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(18).getExchangeValue();
+                        exchangeValue = currencyExchangeRates.get(23).getExchangeValue();
                     }
                     if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(19).getExchangeValue();
+                        exchangeValue = currencyExchangeRates.get(24).getExchangeValue();
                     }
                     
                     convertedAmount = amount * exchangeValue;
