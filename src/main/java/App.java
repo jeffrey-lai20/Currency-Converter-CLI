@@ -118,10 +118,110 @@ public class App extends Application {
                     response.setFill(Color.RED);
                     response.setText("Amount field cannot be empty");
                 } else {
+                    
+                    //=================================
                     // Currency Coversion Calculations Here
+                    // firstCurrencyAmount --> the amount entered
+                    
+                    double amount = Double.parseDouble(firstCurrencyAmount.getText());
+                    
+                    double convertedAmount = 0;
+                    double exchangeValue = 0;
+                    
+                    String selectedFrom = (String)fromCurrencySymbols.getValue();
+                    
+                    String selectedTo = (String)toCurrencySymbols.getValue();
+                    
+                    // USD CONVERSIONS
+                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("USD ($)")) {
+                        exchangeValue = currencyExchangeRates.get(0).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("USD ($)")) {
+                        exchangeValue = currencyExchangeRates.get(1).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("USD ($)")) {
+                        exchangeValue = currencyExchangeRates.get(2).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("USD ($)")) {
+                        exchangeValue = currencyExchangeRates.get(3).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("USD ($)")) {
+                        exchangeValue = currencyExchangeRates.get(4).getExchangeValue();
+                    }
+                    
+                    // GBP CONVERSIONS
+                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("GBP (\u00a3)")) {
+                        exchangeValue = currencyExchangeRates.get(5).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("GBP (\u00a3)")) {
+                        exchangeValue = currencyExchangeRates.get(6).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("GBP (\u00a3)")) {
+                        exchangeValue = currencyExchangeRates.get(7).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("GBP (\u00a3)")) {
+                        exchangeValue = currencyExchangeRates.get(8).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("GBP (\u00a3)")) {
+                        exchangeValue = currencyExchangeRates.get(9).getExchangeValue();
+                    }
+                
+                    // AUS CONVERSIONS
+                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("AUD (A$)")) {
+                        exchangeValue = currencyExchangeRates.get(10).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("AUD (A$)")) {
+                        exchangeValue = currencyExchangeRates.get(11).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("AUD (A$)")) {
+                        exchangeValue = currencyExchangeRates.get(12).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("AUD (A$)")) {
+                        exchangeValue = currencyExchangeRates.get(13).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("AUD (A$)")) {
+                        exchangeValue = currencyExchangeRates.get(14).getExchangeValue();
+                    }
+                    
+                    // EUR CONVERSIONS
+                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("EUR (\u20ac)")) {
+                        exchangeValue = currencyExchangeRates.get(15).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("EUR (\u20ac)")) {
+                        exchangeValue = currencyExchangeRates.get(16).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("EUR (\u20ac)")) {
+                        exchangeValue = currencyExchangeRates.get(17).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("EUR (\u20ac)")) {
+                        exchangeValue = currencyExchangeRates.get(18).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("EUR (\u20ac)")) {
+                        exchangeValue = currencyExchangeRates.get(19).getExchangeValue();
+                    }
+                    
+                    // JPY CONVERSIONS
+                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("JPY (\u00a5)")) {
+                        exchangeValue = currencyExchangeRates.get(15).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("JPY (\u00a5)")) {
+                        exchangeValue = currencyExchangeRates.get(16).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("JPY (\u00a5)")) {
+                        exchangeValue = currencyExchangeRates.get(17).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("JPY (\u00a5)")) {
+                        exchangeValue = currencyExchangeRates.get(18).getExchangeValue();
+                    }
+                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("JPY (\u00a5)")) {
+                        exchangeValue = currencyExchangeRates.get(19).getExchangeValue();
+                    }
+                    
+                    convertedAmount = amount * exchangeValue;
+                    //=================================
                     response.setText("");
                     Text convertedCurrency = new Text();
-                    convertedCurrency.setText(firstCurrencyAmount.getText());
+                    convertedCurrency.setText(Double.toString(convertedAmount));
                     oneToOneGrid.add(convertedCurrency, 2, 4);
                 }
             }
