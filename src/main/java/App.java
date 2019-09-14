@@ -117,8 +117,8 @@ public class App extends Application {
         oneToOneGrid.add(toCurrencySymbols, 4, 1);
 
         Text response = new Text();
-        response.setLayoutX(50);
-        response.setLayoutY(200);
+        response.setLayoutX(90);
+        response.setLayoutY(230);
 
         Button backButton = new Button("Back");
         oneToOneGrid.add(backButton,2,4);
@@ -269,8 +269,8 @@ public class App extends Application {
             }
         });
         Text response = new Text();
-        response.setLayoutX(50);
-        response.setLayoutY(300);
+        response.setLayoutX(100);
+        response.setLayoutY(280);
 
         Group manyToOneGroup = new Group(manyToOneGrid, response);
         Scene manyToOneScene = new Scene(manyToOneGroup, 1100, 360, Color.BEIGE);
