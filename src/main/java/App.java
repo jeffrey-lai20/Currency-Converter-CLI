@@ -88,6 +88,11 @@ public class App extends Application {
         Label amount = new Label("Amount");
         oneToOneGrid.add(amount, 0, 1);
 
+        Text result = new Text();
+        result.setText("Result: ");
+        result.setFont(Font.font("Arial", FontWeight.MEDIUM, 24));
+        oneToOneGrid.add(result,1,3);
+
         TextField firstCurrencyAmount = new TextField();
         oneToOneGrid.add(firstCurrencyAmount, 1, 1);
 
@@ -116,7 +121,7 @@ public class App extends Application {
         response.setLayoutY(200);
 
         Button backButton = new Button("Back");
-        oneToOneGrid.add(backButton,2,3);
+        oneToOneGrid.add(backButton,2,4);
         backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -124,13 +129,11 @@ public class App extends Application {
             }
         });
 
-
         Group oneToOneGroup = new Group(oneToOneGrid, response);
         Scene oneToOneScene = new Scene(oneToOneGroup, 1100, 360, Color.BEIGE);
 
-
         Button convertBtn = new Button("Convert");
-        oneToOneGrid.add(convertBtn, 1, 3);
+        oneToOneGrid.add(convertBtn, 1, 4);
         convertBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -146,96 +149,13 @@ public class App extends Application {
                     double amount = Double.parseDouble(firstCurrencyAmount.getText());
                     
                     double convertedAmount = 0;
-                    double exchangeValue = 0;
+                    double exchangeValue = converter((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue());
 
                     String selectedFrom = (String)fromCurrencySymbols.getValue();
                     String selectedTo = (String)toCurrencySymbols.getValue();
-                    
-                    // USD CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(0).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(5).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(10).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(15).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(20).getExchangeValue();
-                    }
-                    
-                    // GBP CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(1).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(6).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(11).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(16).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(21).getExchangeValue();
-                    }
-                
-                    // AUS CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(2).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(7).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(12).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(17).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(22).getExchangeValue();
-                    }
-                    
-                    // EUR CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(3).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(8).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(13).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(18).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(23).getExchangeValue();
-                    }
-                    
-                    // JPY CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(4).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(9).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(14).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(19).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(24).getExchangeValue();
-                    }
-                    
+
+
+
                     convertedAmount = amount * exchangeValue;
                     //=================================
                     //primaryStage.setScene(oneToOneScene);
@@ -244,9 +164,11 @@ public class App extends Application {
                     Text convertedCurrency = new Text();
                     convertedCurrency.setText(" ");
                     convertedCurrency.setText(Double.toString(convertedAmount));
-                    Rectangle cover = new Rectangle(70,20,Color.BEIGE);
-                    oneToOneGrid.add(cover, 2, 4);
-                    oneToOneGrid.add(convertedCurrency, 2, 4);
+
+                    Rectangle cover = new Rectangle(100,20,Color.BEIGE);
+                    oneToOneGrid.add(cover, 2, 3);
+                    oneToOneGrid.add(convertedCurrency, 2, 3);
+
                 }
             }
         });
@@ -257,16 +179,19 @@ public class App extends Application {
 
     private void manyToOneConverter(Stage primaryStage,Scene home) {
         GridPane manyToOneGrid = new GridPane();
-        Scene manyToOneScene = new Scene(manyToOneGrid, 1100, 360);
+        //Scene manyToOneScene = new Scene(manyToOneGrid, 1100, 360);
         manyToOneGrid.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
         manyToOneGrid.setPadding(new Insets(10, 20, 20, 20));
         manyToOneGrid.setVgap(15);
         manyToOneGrid.setHgap(20);
 
-        Text title = new Text("Three to one converter");
+        Text title = new Text("Many to one converter");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         manyToOneGrid.add(title, 0, 0, 2, 1);
-
+        Text result = new Text();
+        result.setText("Result: ");
+        result.setFont(Font.font("Arial", FontWeight.MEDIUM, 24));
+        manyToOneGrid.add(result,1,4);
         //this list should be global so can be access by both functions.
         ObservableList<String> currencies = FXCollections.observableArrayList(
                 "USD ($)",
@@ -282,16 +207,18 @@ public class App extends Application {
         manyToOneGrid.add(amount1, 0, 1);
         TextField firstCurrencyAmount = new TextField();
         manyToOneGrid.add(firstCurrencyAmount, 1, 1);
+        //from box
         final ComboBox fromCurrencySymbols1 = new ComboBox();
         fromCurrencySymbols1.setItems(currencies);
         fromCurrencySymbols1.getSelectionModel().selectFirst();
         manyToOneGrid.add(fromCurrencySymbols1, 2,1);
-        Label to1 = new Label("to");
-        manyToOneGrid.add(to1, 3, 1);
-        final ComboBox toCurrencySymbols1 = new ComboBox();
-        toCurrencySymbols1.setItems(currencies);
-        toCurrencySymbols1.getSelectionModel().select(1);
-        manyToOneGrid.add(toCurrencySymbols1, 4, 1);
+//        Label to1 = new Label("to");
+//        manyToOneGrid.add(to1, 3, 1);
+//        //to box
+//        final ComboBox toCurrencySymbols1 = new ComboBox();
+//        toCurrencySymbols1.setItems(currencies);
+//        toCurrencySymbols1.getSelectionModel().select(1);
+//        manyToOneGrid.add(toCurrencySymbols1, 4, 1);
 
         //amount 2
         Text amount2 = new Text("Amount 2");
@@ -299,12 +226,14 @@ public class App extends Application {
         manyToOneGrid.add(amount2, 0, 2);
         TextField secondCurrencyAmount = new TextField();
         manyToOneGrid.add(secondCurrencyAmount, 1, 2);
+        //from box
         final ComboBox fromCurrencySymbols2 = new ComboBox();
         fromCurrencySymbols2.setItems(currencies);
         fromCurrencySymbols2.getSelectionModel().selectFirst();
         manyToOneGrid.add(fromCurrencySymbols2, 2,2);
         Label to2 = new Label("to");
         manyToOneGrid.add(to2, 3, 2);
+        //to box
         final ComboBox toCurrencySymbols2 = new ComboBox();
         toCurrencySymbols2.setItems(currencies);
         toCurrencySymbols2.getSelectionModel().select(1);
@@ -316,37 +245,45 @@ public class App extends Application {
         manyToOneGrid.add(amount3, 0, 3);
         TextField thirdCurrencyAmount = new TextField();
         manyToOneGrid.add(thirdCurrencyAmount, 1, 3);
+        //from box
         final ComboBox fromCurrencySymbols3 = new ComboBox();
         fromCurrencySymbols3.setItems(currencies);
         fromCurrencySymbols3.getSelectionModel().selectFirst();
         manyToOneGrid.add(fromCurrencySymbols3, 2,3);
-        Label to3 = new Label("to");
-        manyToOneGrid.add(to3, 3, 3);
-        final ComboBox toCurrencySymbols3 = new ComboBox();
-        toCurrencySymbols3.setItems(currencies);
-        toCurrencySymbols3.getSelectionModel().select(1);
-        manyToOneGrid.add(toCurrencySymbols3, 4, 3);
+//        Label to3 = new Label("to");
+//        manyToOneGrid.add(to3, 3, 3);
+//        //To box
+//        final ComboBox toCurrencySymbols3 = new ComboBox();
+//        toCurrencySymbols3.setItems(currencies);
+//        toCurrencySymbols3.getSelectionModel().select(1);
+//        manyToOneGrid.add(toCurrencySymbols3, 4, 3);
+
         showCurrencyRates(manyToOneGrid);
+
         Button backButton = new Button("Back");
-        manyToOneGrid.add(backButton,2,4);
+        manyToOneGrid.add(backButton,2,5);
         backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 primaryStage.setScene(home);
             }
         });
+        Text response = new Text();
+        response.setLayoutX(50);
+        response.setLayoutY(300);
 
-
+        Group manyToOneGroup = new Group(manyToOneGrid, response);
+        Scene manyToOneScene = new Scene(manyToOneGroup, 1100, 360, Color.BEIGE);
         //Group manyToOne = new Group(manyToOneGrid);
 
         Button convertBtn = new Button("Convert");
-        manyToOneGrid.add(convertBtn, 4, 0);
+        manyToOneGrid.add(convertBtn, 1, 5);
         convertBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (firstCurrencyAmount.getText().trim().isEmpty() || secondCurrencyAmount.getText().trim().isEmpty()||thirdCurrencyAmount.getText().trim().isEmpty()) {
-//                    response.setFill(Color.RED);
-//                    response.setText("Amount field cannot be empty");
+                if (firstCurrencyAmount.getText().trim().isEmpty() && secondCurrencyAmount.getText().trim().isEmpty()&&thirdCurrencyAmount.getText().trim().isEmpty()) {
+                    response.setFill(Color.RED);
+                    response.setText("At least one field must be filled in");
                 } else {
 
                     //=================================
@@ -355,106 +292,32 @@ public class App extends Application {
 
                     double amount = Double.parseDouble(firstCurrencyAmount.getText());
 
-                    double convertedAmount = 0;
-                    double exchangeValue = 0;
 
-                    String selectedFrom = (String)fromCurrencySymbols1.getValue();
-                    String selectedTo = (String)toCurrencySymbols1.getValue();
+                    double exchangeValue =  converter((String)fromCurrencySymbols1.getValue(),(String)toCurrencySymbols2.getValue());
+                    double convertedAmount = amount*exchangeValue;
+
+                    double amount2 = Double.parseDouble(secondCurrencyAmount.getText());
+
+                    double exchangeValue2 =  converter((String)fromCurrencySymbols2.getValue(),(String)toCurrencySymbols2.getValue());
+                    double convertedAmount2= amount2 * exchangeValue2;
+
+                    double amount3 = Double.parseDouble(thirdCurrencyAmount.getText());
+                    double exchangeValue3  =  converter((String)fromCurrencySymbols3.getValue(),(String)toCurrencySymbols2.getValue());
+                    double convertedAmount3= amount3 * exchangeValue3;
+
 
                     // USD CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(0).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(1).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(2).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(3).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("USD ($)")) {
-                        exchangeValue = currencyExchangeRates.get(4).getExchangeValue();
-                    }
 
-                    // GBP CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(5).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(6).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(7).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(8).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("GBP (\u00a3)")) {
-                        exchangeValue = currencyExchangeRates.get(9).getExchangeValue();
-                    }
 
-                    // AUS CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(10).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(11).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(12).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(13).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("AUD (A$)")) {
-                        exchangeValue = currencyExchangeRates.get(14).getExchangeValue();
-                    }
-
-                    // EUR CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(15).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(16).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(17).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(18).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("EUR (\u20ac)")) {
-                        exchangeValue = currencyExchangeRates.get(19).getExchangeValue();
-                    }
-
-                    // JPY CONVERSIONS
-                    if (selectedFrom.equals("USD ($)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(20).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(21).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(22).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(23).getExchangeValue();
-                    }
-                    if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("JPY (\u00a5)")) {
-                        exchangeValue = currencyExchangeRates.get(24).getExchangeValue();
-                    }
-
-                    convertedAmount = amount * exchangeValue;
+                    double totalConvertedAmount = convertedAmount+convertedAmount2+convertedAmount3;
                     //=================================
                     //primaryStage.setScene(oneToOneScene);
                     primaryStage.setScene(manyToOneScene);
                     //response.setText("");
                     Text convertedCurrency = new Text();
                     convertedCurrency.setText(" ");
-                    convertedCurrency.setText(Double.toString(convertedAmount));
-                    Rectangle cover = new Rectangle(70,20,Color.BEIGE);
+                    convertedCurrency.setText(Double.toString(totalConvertedAmount));
+                    Rectangle cover = new Rectangle(150,20,Color.BEIGE);
                     manyToOneGrid.add(cover, 2, 4);
                     manyToOneGrid.add(convertedCurrency, 2, 4);
                 }
@@ -592,6 +455,96 @@ public class App extends Application {
         Currency JPYJPY =  new Currency("JPY", "JPY", 1);
         currencyExchangeRates.add(JPYJPY);
     }
+
+    private double converter(String selectedFrom,String selectedTo){
+        // USD CONVERSIONS
+        if (selectedFrom.equals("USD ($)") && selectedTo.equals("USD ($)")) {
+            return currencyExchangeRates.get(0).getExchangeValue();
+        }
+        if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("USD ($)")) {
+            return currencyExchangeRates.get(5).getExchangeValue();
+        }
+        if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("USD ($)")) {
+            return currencyExchangeRates.get(10).getExchangeValue();
+        }
+        if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("USD ($)")) {
+            return currencyExchangeRates.get(15).getExchangeValue();
+        }
+        if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("USD ($)")) {
+            return currencyExchangeRates.get(20).getExchangeValue();
+        }
+
+        // GBP CONVERSIONS
+        if (selectedFrom.equals("USD ($)") && selectedTo.equals("GBP (\u00a3)")) {
+            return currencyExchangeRates.get(1).getExchangeValue();
+        }
+        if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("GBP (\u00a3)")) {
+            return currencyExchangeRates.get(6).getExchangeValue();
+        }
+        if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("GBP (\u00a3)")) {
+            return currencyExchangeRates.get(11).getExchangeValue();
+        }
+        if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("GBP (\u00a3)")) {
+            return currencyExchangeRates.get(16).getExchangeValue();
+        }
+        if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("GBP (\u00a3)")) {
+            return currencyExchangeRates.get(21).getExchangeValue();
+        }
+
+        // AUS CONVERSIONS
+        if (selectedFrom.equals("USD ($)") && selectedTo.equals("AUD (A$)")) {
+            return currencyExchangeRates.get(2).getExchangeValue();
+        }
+        if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("AUD (A$)")) {
+            return currencyExchangeRates.get(7).getExchangeValue();
+        }
+        if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("AUD (A$)")) {
+            return currencyExchangeRates.get(12).getExchangeValue();
+        }
+        if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("AUD (A$)")) {
+            return currencyExchangeRates.get(17).getExchangeValue();
+        }
+        if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("AUD (A$)")) {
+            return currencyExchangeRates.get(22).getExchangeValue();
+        }
+
+        // EUR CONVERSIONS
+        if (selectedFrom.equals("USD ($)") && selectedTo.equals("EUR (\u20ac)")) {
+            return currencyExchangeRates.get(3).getExchangeValue();
+        }
+        if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("EUR (\u20ac)")) {
+            return currencyExchangeRates.get(8).getExchangeValue();
+        }
+        if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("EUR (\u20ac)")) {
+            return currencyExchangeRates.get(13).getExchangeValue();
+        }
+        if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("EUR (\u20ac)")) {
+            return currencyExchangeRates.get(18).getExchangeValue();
+        }
+        if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("EUR (\u20ac)")) {
+            return currencyExchangeRates.get(23).getExchangeValue();
+        }
+
+        // JPY CONVERSIONS
+        if (selectedFrom.equals("USD ($)") && selectedTo.equals("JPY (\u00a5)")) {
+            return currencyExchangeRates.get(4).getExchangeValue();
+        }
+        if (selectedFrom.equals("GBP (\u00a3)") && selectedTo.equals("JPY (\u00a5)")) {
+            return currencyExchangeRates.get(9).getExchangeValue();
+        }
+        if (selectedFrom.equals("AUD (A$)") && selectedTo.equals("JPY (\u00a5)")) {
+            return currencyExchangeRates.get(14).getExchangeValue();
+        }
+        if (selectedFrom.equals("EUR (\u20ac)") && selectedTo.equals("JPY (\u00a5)")) {
+            return currencyExchangeRates.get(19).getExchangeValue();
+        }
+        if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("JPY (\u00a5)")) {
+            return currencyExchangeRates.get(24).getExchangeValue();
+        }
+        else{
+            return 0.0;
+        }
+    };
 
     class Currency {
         private String from;
