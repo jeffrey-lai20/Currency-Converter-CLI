@@ -25,6 +25,7 @@ import java.util.List;
 
 public class App extends Application {
     private List<Currency> currencyExchangeRates = new ArrayList<Currency>();
+    private Scene scene;
     @Override
     public void start(Stage primaryStage) throws Exception {
         initializeCurrencies();
@@ -61,7 +62,7 @@ public class App extends Application {
 
         showCurrencyRates(homePage);
 
-        Scene scene = new Scene(homePage, 1080, 720);
+        this.scene = new Scene(homePage, 1080, 720);
         primaryStage.setScene(scene);
 //        scene.getStylesheets().add(getClass().getResource("/App.css").toExternalForm());
         primaryStage.show();
@@ -369,6 +370,9 @@ public class App extends Application {
         }
     }
 
+    public Scene getScene() {
+        return this.scene;
+    }
     public static void main(String[] args) {
         launch(args);
     }
