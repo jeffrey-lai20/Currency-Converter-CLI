@@ -21,6 +21,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Options {
     private static ObservableList<String> currencies = FXCollections.observableArrayList(
             "USD ($)",
@@ -269,8 +271,9 @@ public class Options {
         int idx = 0;
         for (int i = gridStartCol; i < gridStartCol+5; i++) {
             for (int j = gridStartRow; j < gridStartRow+5; j++) {
-                for(double value:Converter.currencyExchangeRatesMap.values())
-                grid.add(new Text(Double.toString(value)), i, j);
+                double val = Converter.currencyExchangeRatesMap.get(Converter.keys[0]);
+                Text value = new Text(Double.toString(val));
+                grid.add(value, i, j);
                 idx++;
             }
         }

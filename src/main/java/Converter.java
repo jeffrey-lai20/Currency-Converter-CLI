@@ -1,7 +1,9 @@
 import java.util.HashMap;
 
+
 class Converter {
-    public static HashMap<String, Double> currencyExchangeRatesMap = new HashMap<>();
+    public static HashMap<String, Double> currencyExchangeRatesMap = new HashMap<String, Double>();
+    static Object[] keys = currencyExchangeRatesMap.keySet().toArray();
     static double convert(String selectedFrom, String selectedTo,double amount){
         return currencyExchangeRatesMap.get(selectedFrom+selectedTo)*amount;
     };
@@ -31,5 +33,8 @@ class Converter {
         currencyExchangeRatesMap.put("JPY (\u00a5)AUD (A$)", 0.01405);
         currencyExchangeRatesMap.put("JPY (\u00a5)EUR (\u20ac)", 0.00860);
         currencyExchangeRatesMap.put("JPY (\u00a5)JPY (\u00a5)", 1.0);
+        keys = currencyExchangeRatesMap.keySet().toArray();
+
     }
+
 }
