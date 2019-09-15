@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -21,14 +22,21 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Options {
+    private static ObservableList<String> currencies = FXCollections.observableArrayList(
+            "USD ($)",
+            "AUD (A$)",
+            "GBP (\u00a3)",
+            "EUR (\u20ac)",
+            "JPY (\u00a5)"
+    );
+
     public static void oneToOneConverter(Stage primaryStage, Scene home) {
         GridPane oneToOneGrid = new GridPane();
-        //oneToOneGrid.setGridLinesVisible(true);
+//        oneToOneGrid.setGridLinesVisible(true);
         oneToOneGrid.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
         oneToOneGrid.setPadding(new Insets(10, 20, 20, 20));
         oneToOneGrid.setVgap(15);
         oneToOneGrid.setHgap(20);
-
         Text title = new Text("One to one converter");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         oneToOneGrid.add(title, 0, 0, 2, 1);
@@ -44,13 +52,6 @@ public class Options {
         TextField firstCurrencyAmount = new TextField();
         oneToOneGrid.add(firstCurrencyAmount, 1, 1);
 
-        ObservableList<String> currencies = FXCollections.observableArrayList(
-                "USD ($)",
-                "AUD (A$)",
-                "GBP (\u00a3)",
-                "EUR (\u20ac)",
-                "JPY (\u00a5)"
-        );
         final ComboBox fromCurrencySymbols = new ComboBox();
         fromCurrencySymbols.setItems(currencies);
         fromCurrencySymbols.getSelectionModel().selectFirst();
@@ -90,59 +91,56 @@ public class Options {
                     response.setText("Amount field cannot be empty");
                 } else {
 
-                    //=================================
-                    // Currency Coversion Calculations Here
-                    // firstCurrencyAmount --> the amount entered
-
                     double amount = Double.parseDouble(firstCurrencyAmount.getText());
+                    double convertedAmount = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount);
 
-                    double convertedAmount = 0;
-                    double exchangeValue = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue());
-
-                    String selectedFrom = (String)fromCurrencySymbols.getValue();
-                    String selectedTo = (String)toCurrencySymbols.getValue();
-                    convertedAmount = amount * exchangeValue;
-                    //=================================
-                    //primaryStage.setScene(oneToOneScene);
-                    primaryStage.setScene(oneToOneScene);
-                    response.setText("");
                     Text convertedCurrency = new Text();
-                    convertedCurrency.setText(" ");
                     convertedCurrency.setText(Double.toString(convertedAmount));
-
-                    Rectangle cover = new Rectangle(100,20,Color.BEIGE);
+                    Rectangle cover = new Rectangle(150,20,Color.BEIGE);
                     oneToOneGrid.add(cover, 2, 3);
                     oneToOneGrid.add(convertedCurrency, 2, 3);
                 }
             }
+        });
+        firstCurrencyAmount.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) {
+
+            double amount1 = Double.parseDouble(firstCurrencyAmount.getText());
+            double convertedAmount = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount1);
+
+            Text convertedCurrency = new Text();
+            convertedCurrency.setText(Double.toString(convertedAmount));
+            Rectangle cover = new Rectangle(150,20,Color.BEIGE);
+            oneToOneGrid.add(cover, 2, 3);
+            oneToOneGrid.add(convertedCurrency, 2, 3);; }
+
         });
         showCurrencyRates(oneToOneGrid);
         primaryStage.setScene(oneToOneScene);
     }
 
     public static void manyToOneConverter(Stage primaryStage,Scene home) {
+
+        //main page setup
         GridPane manyToOneGrid = new GridPane();
-        //Scene manyToOneScene = new Scene(manyToOneGrid, 1100, 360);
+        showCurrencyRates(manyToOneGrid);
         manyToOneGrid.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
         manyToOneGrid.setPadding(new Insets(10, 20, 20, 20));
         manyToOneGrid.setVgap(15);
         manyToOneGrid.setHgap(20);
-
         Text title = new Text("Many to one converter");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         manyToOneGrid.add(title, 0, 0, 2, 1);
+        //result
         Text result = new Text();
         result.setText("Result: ");
         result.setFont(Font.font("Arial", FontWeight.MEDIUM, 24));
         manyToOneGrid.add(result,1,4);
-        //this list should be global so can be access by both functions.
-        ObservableList<String> currencies = FXCollections.observableArrayList(
-                "USD ($)",
-                "AUD (A$)",
-                "GBP (\u00a3)",
-                "EUR (\u20ac)",
-                "JPY (\u00a5)"
-        );
+        //Error message
+        Text response = new Text();
+        response.setLayoutX(100);
+        response.setLayoutY(280);
+        Group manyToOneGroup = new Group(manyToOneGrid, response);
+        Scene manyToOneScene = new Scene(manyToOneGroup, 1100, 360, Color.BEIGE);
 
         //amount 1
         Text amount1 = new Text("Amount 1");
@@ -186,8 +184,6 @@ public class Options {
         fromCurrencySymbols3.getSelectionModel().selectFirst();
         manyToOneGrid.add(fromCurrencySymbols3, 2,3);
 
-        showCurrencyRates(manyToOneGrid);
-
         Button backButton = new Button("Back");
         manyToOneGrid.add(backButton,2,5);
         backButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -196,14 +192,8 @@ public class Options {
                 primaryStage.setScene(home);
             }
         });
-        Text response = new Text();
-        response.setLayoutX(100);
-        response.setLayoutY(280);
 
-        Group manyToOneGroup = new Group(manyToOneGrid, response);
-        Scene manyToOneScene = new Scene(manyToOneGroup, 1100, 360, Color.BEIGE);
-        //Group manyToOne = new Group(manyToOneGrid);
-
+        //Convert Button and function
         Button convertBtn = new Button("Convert");
         manyToOneGrid.add(convertBtn, 1, 5);
         convertBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -213,29 +203,19 @@ public class Options {
                     response.setFill(Color.RED);
                     response.setText("At least one field must be filled in");
                 } else {
-                    //=================================
-                    // Currency Coversion Calculations Here
-                    // firstCurrencyAmount --> the amount entered
 
                     double amount = Double.parseDouble(firstCurrencyAmount.getText());
-                    double exchangeValue =  Converter.convert((String)fromCurrencySymbols1.getValue(),(String)toCurrencySymbols2.getValue());
-                    double convertedAmount = amount*exchangeValue;
+                    double convertedAmount =  Converter.convert((String)fromCurrencySymbols1.getValue(),(String)toCurrencySymbols2.getValue(),amount);
 
                     double amount2 = Double.parseDouble(secondCurrencyAmount.getText());
-                    double exchangeValue2 =  Converter.convert((String)fromCurrencySymbols2.getValue(),(String)toCurrencySymbols2.getValue());
-                    double convertedAmount2= amount2 * exchangeValue2;
+                    double convertedAmount2 =  Converter.convert((String)fromCurrencySymbols2.getValue(),(String)toCurrencySymbols2.getValue(),amount2);
 
                     double amount3 = Double.parseDouble(thirdCurrencyAmount.getText());
-                    double exchangeValue3  =  Converter.convert((String)fromCurrencySymbols3.getValue(),(String)toCurrencySymbols2.getValue());
-                    double convertedAmount3= amount3 * exchangeValue3;
+                    double  convertedAmount3 =  Converter.convert((String)fromCurrencySymbols3.getValue(),(String)toCurrencySymbols2.getValue(),amount3);
 
                     double totalConvertedAmount = convertedAmount+convertedAmount2+convertedAmount3;
-                    //=================================
-                    //primaryStage.setScene(oneToOneScene);
-                    primaryStage.setScene(manyToOneScene);
-                    //response.setText("");
+
                     Text convertedCurrency = new Text();
-                    convertedCurrency.setText(" ");
                     convertedCurrency.setText(Double.toString(totalConvertedAmount));
                     Rectangle cover = new Rectangle(150,20,Color.BEIGE);
                     manyToOneGrid.add(cover, 2, 4);
@@ -243,6 +223,7 @@ public class Options {
                 }
             }
         });
+
         primaryStage.setScene(manyToOneScene);
     }
 
