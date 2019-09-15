@@ -269,7 +269,8 @@ public class Options {
         int idx = 0;
         for (int i = gridStartCol; i < gridStartCol+5; i++) {
             for (int j = gridStartRow; j < gridStartRow+5; j++) {
-                grid.add(new Text(Double.toString(Converter.currencyExchangeRates.get(idx).getExchangeValue())), i, j);
+                for(double value:Converter.currencyExchangeRatesMap.values())
+                grid.add(new Text(Double.toString(value)), i, j);
                 idx++;
             }
         }
