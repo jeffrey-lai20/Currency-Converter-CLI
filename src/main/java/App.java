@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -28,7 +29,7 @@ public class App extends Application {
     private Scene scene;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        initializeCurrencies();
+        Converter.initializeCurrencies();
 
         primaryStage.setTitle("Currency App");
 
@@ -42,21 +43,29 @@ public class App extends Application {
         homeTitle.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         homePage.add(homeTitle, 0, 0, 2, 1);
 
-        Button oneToOne = new Button("Convert One Currency");
+        Button oneToOne = new Button("One to one conversion");
         homePage.add(oneToOne, 1, 2);
+
+
+        Button manyToOne = new Button("Combination conversion(up to 3)");
+        homePage.add(manyToOne, 3, 2);
+
+
+
+        Options.showCurrencyRates(homePage);
+
+        Scene scene = new Scene(homePage, 1100, 360);
+
         oneToOne.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                oneToOneConverter(primaryStage);
+                Options.oneToOneConverter(primaryStage,scene);
             }
         });
-
-        Button manyToOne = new Button("Convert Three Currencies to One");
-        homePage.add(manyToOne, 3, 2);
         manyToOne.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                manyToOneConverter(primaryStage);
+                Options.manyToOneConverter(primaryStage,scene);
             }
         });
 
@@ -119,20 +128,20 @@ public class App extends Application {
                     response.setFill(Color.RED);
                     response.setText("Amount field cannot be empty");
                 } else {
-                    
+
                     //=================================
                     // Currency Coversion Calculations Here
                     // firstCurrencyAmount --> the amount entered
-                    
+
                     double amount = Double.parseDouble(firstCurrencyAmount.getText());
-                    
+
                     double convertedAmount = 0;
                     double exchangeValue = 0;
-                    
+
                     String selectedFrom = (String)fromCurrencySymbols.getValue();
-                    
+
                     String selectedTo = (String)toCurrencySymbols.getValue();
-                    
+
                     // USD CONVERSIONS
                     if (selectedFrom.equals("USD ($)") && selectedTo.equals("USD ($)")) {
                         exchangeValue = currencyExchangeRates.get(0).getExchangeValue();
@@ -149,7 +158,7 @@ public class App extends Application {
                     if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("USD ($)")) {
                         exchangeValue = currencyExchangeRates.get(4).getExchangeValue();
                     }
-                    
+
                     // GBP CONVERSIONS
                     if (selectedFrom.equals("USD ($)") && selectedTo.equals("GBP (\u00a3)")) {
                         exchangeValue = currencyExchangeRates.get(5).getExchangeValue();
@@ -166,7 +175,7 @@ public class App extends Application {
                     if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("GBP (\u00a3)")) {
                         exchangeValue = currencyExchangeRates.get(9).getExchangeValue();
                     }
-                
+
                     // AUS CONVERSIONS
                     if (selectedFrom.equals("USD ($)") && selectedTo.equals("AUD (A$)")) {
                         exchangeValue = currencyExchangeRates.get(10).getExchangeValue();
@@ -183,7 +192,7 @@ public class App extends Application {
                     if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("AUD (A$)")) {
                         exchangeValue = currencyExchangeRates.get(14).getExchangeValue();
                     }
-                    
+
                     // EUR CONVERSIONS
                     if (selectedFrom.equals("USD ($)") && selectedTo.equals("EUR (\u20ac)")) {
                         exchangeValue = currencyExchangeRates.get(15).getExchangeValue();
@@ -200,7 +209,7 @@ public class App extends Application {
                     if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("EUR (\u20ac)")) {
                         exchangeValue = currencyExchangeRates.get(19).getExchangeValue();
                     }
-                    
+
                     // JPY CONVERSIONS
                     if (selectedFrom.equals("USD ($)") && selectedTo.equals("JPY (\u00a5)")) {
                         exchangeValue = currencyExchangeRates.get(20).getExchangeValue();
@@ -217,7 +226,7 @@ public class App extends Application {
                     if (selectedFrom.equals("JPY (\u00a5)") && selectedTo.equals("JPY (\u00a5)")) {
                         exchangeValue = currencyExchangeRates.get(24).getExchangeValue();
                     }
-                    
+
                     convertedAmount = amount * exchangeValue;
                     //=================================
                     response.setText("");
