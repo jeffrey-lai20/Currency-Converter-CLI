@@ -81,7 +81,7 @@ public class Options {
         });
 
         Group oneToOneGroup = new Group(oneToOneGrid, response);
-        Scene oneToOneScene = new Scene(oneToOneGroup, 1100, 360, Color.BEIGE);
+        Scene oneToOneScene = new Scene(oneToOneGroup, 1110, 360, Color.BEIGE);
 
         Button convertBtn = new Button("Convert");
         oneToOneGrid.add(convertBtn, 1, 4);
@@ -94,26 +94,16 @@ public class Options {
                 } else {
 
                     double amount = Double.parseDouble(firstCurrencyAmount.getText());
-                    double convertedAmount = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount);
+                    comboConvert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount,2,3,oneToOneGrid);
 
-                    Text convertedCurrency = new Text();
-                    convertedCurrency.setText(Double.toString(convertedAmount));
-                    Rectangle cover = new Rectangle(150,20,Color.BEIGE);
-                    oneToOneGrid.add(cover, 2, 3);
-                    oneToOneGrid.add(convertedCurrency, 2, 3);
                 }
             }
         });
         firstCurrencyAmount.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) {
 
             double amount1 = Double.parseDouble(firstCurrencyAmount.getText());
-            double convertedAmount = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount1);
-
-            Text convertedCurrency = new Text();
-            convertedCurrency.setText(Double.toString(convertedAmount));
-            Rectangle cover = new Rectangle(150,20,Color.BEIGE);
-            oneToOneGrid.add(cover, 2, 3);
-            oneToOneGrid.add(convertedCurrency, 2, 3);; }
+            comboConvert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount1,2,3,oneToOneGrid);
+            }
 
         });
         showCurrencyRates(oneToOneGrid);
@@ -142,7 +132,7 @@ public class Options {
         response.setLayoutX(100);
         response.setLayoutY(280);
         Group manyToOneGroup = new Group(manyToOneGrid, response);
-        Scene manyToOneScene = new Scene(manyToOneGroup, 1100, 360, Color.BEIGE);
+        Scene manyToOneScene = new Scene(manyToOneGroup, 1110, 360, Color.BEIGE);
 
         //amount 1
         Text amount1 = new Text("Amount 1");
@@ -206,30 +196,36 @@ public class Options {
                     response.setText("At least one field must be filled in");
                 } else {
 
-                    double amount = Double.parseDouble(firstCurrencyAmount.getText());
-                    double convertedAmount =  Converter.convert((String)fromCurrencySymbols1.getValue(),(String)toCurrencySymbols2.getValue(),amount);
+                    threeToOnecomboConvert( (String)fromCurrencySymbols1.getValue(),(String)fromCurrencySymbols2.getValue(),(String)fromCurrencySymbols3.getValue(),(String) toCurrencySymbols2.getValue(),Double.parseDouble(firstCurrencyAmount.getText()),Double.parseDouble(secondCurrencyAmount.getText()),Double.parseDouble(thirdCurrencyAmount.getText()),2,4,manyToOneGrid);
 
-                    double amount2 = Double.parseDouble(secondCurrencyAmount.getText());
-                    double convertedAmount2 =  Converter.convert((String)fromCurrencySymbols2.getValue(),(String)toCurrencySymbols2.getValue(),amount2);
-
-                    double amount3 = Double.parseDouble(thirdCurrencyAmount.getText());
-                    double  convertedAmount3 =  Converter.convert((String)fromCurrencySymbols3.getValue(),(String)toCurrencySymbols2.getValue(),amount3);
-
-                    double totalConvertedAmount = convertedAmount+convertedAmount2+convertedAmount3;
-
-                    Text convertedCurrency = new Text();
-                    convertedCurrency.setText(Double.toString(totalConvertedAmount));
-                    Rectangle cover = new Rectangle(150,20,Color.BEIGE);
-                    manyToOneGrid.add(cover, 2, 4);
-                    manyToOneGrid.add(convertedCurrency, 2, 4);
                 }
             }
+        });
+
+
+        firstCurrencyAmount.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) {
+            threeToOnecomboConvert( (String)fromCurrencySymbols1.getValue(),(String)fromCurrencySymbols2.getValue(),(String)fromCurrencySymbols3.getValue(),(String) toCurrencySymbols2.getValue(),Double.parseDouble(firstCurrencyAmount.getText()),Double.parseDouble(secondCurrencyAmount.getText()),Double.parseDouble(thirdCurrencyAmount.getText()),2,4,manyToOneGrid);
+
+        }
+
+        });
+        secondCurrencyAmount.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) {
+            threeToOnecomboConvert( (String)fromCurrencySymbols1.getValue(),(String)fromCurrencySymbols2.getValue(),(String)fromCurrencySymbols3.getValue(),(String) toCurrencySymbols2.getValue(),Double.parseDouble(firstCurrencyAmount.getText()),Double.parseDouble(secondCurrencyAmount.getText()),Double.parseDouble(thirdCurrencyAmount.getText()),2,4,manyToOneGrid);
+
+        }
+
+        });
+        thirdCurrencyAmount.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) {
+            threeToOnecomboConvert( (String)fromCurrencySymbols1.getValue(),(String)fromCurrencySymbols2.getValue(),(String)fromCurrencySymbols3.getValue(),(String) toCurrencySymbols2.getValue(),Double.parseDouble(firstCurrencyAmount.getText()),Double.parseDouble(secondCurrencyAmount.getText()),Double.parseDouble(thirdCurrencyAmount.getText()),2,4,manyToOneGrid);
+
+        }
+
         });
 
         primaryStage.setScene(manyToOneScene);
     }
 
-    public static void showCurrencyRates(GridPane grid) {
+    static void showCurrencyRates(GridPane grid) {
         int gridStartCol = 8;
         int gridStartRow = 2;
         Text exchangeTableTitle = new Text("Currency Exchange Rates");
@@ -277,5 +273,26 @@ public class Options {
             }
         }
 ///        grid.setGridLinesVisible(true);
+    }
+    private static void comboConvert(String fromValue, String toValue, double amount, int colIndex, int rowIndex, GridPane grid){
+        double convertedAmount = Converter.convert(fromValue,toValue,amount);
+        Text convertedCurrency = new Text();
+        convertedCurrency.setText(Double.toString(convertedAmount));
+        Rectangle cover = new Rectangle(150,20,Color.BEIGE);
+        grid.add(cover, colIndex, rowIndex);
+        grid.add(convertedCurrency, colIndex, rowIndex);
+    }
+    private static void threeToOnecomboConvert(String fromValue,String fromValue2,String fromValue3, String toValue, double amount1,double amount2,double amount3, int colIndex, int rowIndex, GridPane grid){
+        double convertedAmount = Converter.convert(fromValue,toValue,amount1);
+        double convertedAmount2 =  Converter.convert(fromValue2,toValue,amount2);
+        double  convertedAmount3 =  Converter.convert(fromValue3,toValue,amount3);
+
+        double totalConvertedAmount = convertedAmount+convertedAmount2+convertedAmount3;
+
+        Text convertedCurrency = new Text();
+        convertedCurrency.setText(Double.toString(totalConvertedAmount));
+        Rectangle cover = new Rectangle(150,20,Color.BEIGE);
+        grid.add(cover, colIndex, rowIndex);
+        grid.add(convertedCurrency, colIndex, rowIndex);
     }
 }
