@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,18 @@ class Converter {
 
     static Object[] keys = currencyExchangeRatesMap.keySet().toArray();
     static double convert(String selectedFrom, String selectedTo,double amount){
-        return currencyExchangeRatesMap.get(selectedFrom+selectedTo)*amount;
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount entered is less than 0.");
+        }
+        if (Double.isNaN(amount)) {
+            throw new NullPointerException("Amount entered is not a number.");
+        }
+        DecimalFormat df = new DecimalFormat("#.###");
+        double converted = currencyExchangeRatesMap.get(selectedFrom+selectedTo)*amount;
+        double convertedAmount = Double.parseDouble(df.format(converted));
+
+        System.out.println(convertedAmount);
+        return convertedAmount;
     };
     static void initializeCurrencies() {
         currencyExchangeRatesMap.put("USD ($)USD ($)", 1.0);

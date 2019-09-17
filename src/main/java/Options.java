@@ -90,31 +90,40 @@ public class Options {
             public void handle(ActionEvent event) {
                 if (firstCurrencyAmount.getText().trim().isEmpty()) {
                     response.setFill(Color.RED);
-                    response.setText("Amount field cannot be empty");
+                    response.setText("Amount field cannot be empty.");
                 } else {
+                    try {
+                        double amount = Double.parseDouble(firstCurrencyAmount.getText());
+                        double convertedAmount = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount);
 
-                    double amount = Double.parseDouble(firstCurrencyAmount.getText());
-                    double convertedAmount = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount);
+                        Text convertedCurrency = new Text();
+                        convertedCurrency.setText(Double.toString(convertedAmount));
+                        Rectangle cover = new Rectangle(150,20,Color.BEIGE);
+                        oneToOneGrid.add(cover, 2, 3);
+                        oneToOneGrid.add(convertedCurrency, 2, 3);
+                    } catch (NumberFormatException e) {
+                        response.setFill(Color.RED);
+                        response.setText("Amount field cannot be a String.");
+                    }
 
-                    Text convertedCurrency = new Text();
-                    convertedCurrency.setText(Double.toString(convertedAmount));
-                    Rectangle cover = new Rectangle(150,20,Color.BEIGE);
-                    oneToOneGrid.add(cover, 2, 3);
-                    oneToOneGrid.add(convertedCurrency, 2, 3);
                 }
             }
         });
         firstCurrencyAmount.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) {
+            try {
+                double amount1 = Double.parseDouble(firstCurrencyAmount.getText());
+                double convertedAmount = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount1);
 
-            double amount1 = Double.parseDouble(firstCurrencyAmount.getText());
-            double convertedAmount = Converter.convert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount1);
-
-            Text convertedCurrency = new Text();
-            convertedCurrency.setText(Double.toString(convertedAmount));
-            Rectangle cover = new Rectangle(150,20,Color.BEIGE);
-            oneToOneGrid.add(cover, 2, 3);
-            oneToOneGrid.add(convertedCurrency, 2, 3);; }
-
+                Text convertedCurrency = new Text();
+                convertedCurrency.setText(Double.toString(convertedAmount));
+                Rectangle cover = new Rectangle(150,20,Color.BEIGE);
+                oneToOneGrid.add(cover, 2, 3);
+                oneToOneGrid.add(convertedCurrency, 2, 3);;
+            } catch (NumberFormatException e) {
+                response.setFill(Color.RED);
+                response.setText("Amount field cannot be a String.");
+            }
+        }
         });
         showCurrencyRates(oneToOneGrid);
         primaryStage.setScene(oneToOneScene);
@@ -205,23 +214,28 @@ public class Options {
                     response.setFill(Color.RED);
                     response.setText("At least one field must be filled in");
                 } else {
+                    try {
+                        double amount = Double.parseDouble(firstCurrencyAmount.getText());
+                        double convertedAmount =  Converter.convert((String)fromCurrencySymbols1.getValue(),(String)toCurrencySymbols2.getValue(),amount);
 
-                    double amount = Double.parseDouble(firstCurrencyAmount.getText());
-                    double convertedAmount =  Converter.convert((String)fromCurrencySymbols1.getValue(),(String)toCurrencySymbols2.getValue(),amount);
+                        double amount2 = Double.parseDouble(secondCurrencyAmount.getText());
+                        double convertedAmount2 =  Converter.convert((String)fromCurrencySymbols2.getValue(),(String)toCurrencySymbols2.getValue(),amount2);
 
-                    double amount2 = Double.parseDouble(secondCurrencyAmount.getText());
-                    double convertedAmount2 =  Converter.convert((String)fromCurrencySymbols2.getValue(),(String)toCurrencySymbols2.getValue(),amount2);
+                        double amount3 = Double.parseDouble(thirdCurrencyAmount.getText());
+                        double  convertedAmount3 =  Converter.convert((String)fromCurrencySymbols3.getValue(),(String)toCurrencySymbols2.getValue(),amount3);
 
-                    double amount3 = Double.parseDouble(thirdCurrencyAmount.getText());
-                    double  convertedAmount3 =  Converter.convert((String)fromCurrencySymbols3.getValue(),(String)toCurrencySymbols2.getValue(),amount3);
+                        double totalConvertedAmount = convertedAmount+convertedAmount2+convertedAmount3;
 
-                    double totalConvertedAmount = convertedAmount+convertedAmount2+convertedAmount3;
+                        Text convertedCurrency = new Text();
+                        convertedCurrency.setText(Double.toString(totalConvertedAmount));
+                        Rectangle cover = new Rectangle(150,20,Color.BEIGE);
+                        manyToOneGrid.add(cover, 2, 4);
+                        manyToOneGrid.add(convertedCurrency, 2, 4);
+                    } catch (NumberFormatException e) {
+                        response.setFill(Color.RED);
+                        response.setText("Amount field cannot be a String.");
+                    }
 
-                    Text convertedCurrency = new Text();
-                    convertedCurrency.setText(Double.toString(totalConvertedAmount));
-                    Rectangle cover = new Rectangle(150,20,Color.BEIGE);
-                    manyToOneGrid.add(cover, 2, 4);
-                    manyToOneGrid.add(convertedCurrency, 2, 4);
                 }
             }
         });
