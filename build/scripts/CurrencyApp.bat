@@ -79,7 +79,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\CurrencyApp-1.0-SNAPSHOT.jar;%APP_HOME%\lib\javafx-controls-12.0.2-win.jar;%APP_HOME%\lib\javafx-media-12.0.2-win.jar;%APP_HOME%\lib\javafx-graphics-12.0.2-win.jar;%APP_HOME%\lib\javafx-graphics-12.0.2.jar;%APP_HOME%\lib\javafx-base-12.0.2-win.jar;%APP_HOME%\lib\javafx-base-12.0.2.jar
+set CLASSPATH=%APP_HOME%\lib\CurrencyApp-1.0-SNAPSHOT.jar;%APP_HOME%\lib\javafx-media-12.0.2-linux.jar;%APP_HOME%\lib\javafx-controls-12.0.2-linux.jar;%APP_HOME%\lib\javafx-graphics-12.0.2-linux.jar;%APP_HOME%\lib\javafx-graphics-12.0.2.jar;%APP_HOME%\lib\javafx-base-12.0.2-linux.jar;%APP_HOME%\lib\javafx-base-12.0.2.jar
 
 @rem Execute CurrencyApp
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CURRENCY_APP_OPTS%  -classpath "%CLASSPATH%" App %CMD_LINE_ARGS%
