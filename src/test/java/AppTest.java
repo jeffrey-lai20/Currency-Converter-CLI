@@ -57,8 +57,7 @@ public class AppTest extends ApplicationTest {
         assertEquals(91.431, conv.convert("USD ($)", "EUR (\u20ac)", 100));
         assertEquals(10630.6, conv.convert("USD ($)", "JPY (\u00a5)", 100));
 
-        assertEquals(66.932, conv.convert("AUD (A$)", "USD ($)", 100));
-        assertEquals(91.431, conv.convert("GBP (\u00a3)", "USD ($)", 100));
+        assertEquals(120.336, conv.convert("GBP (\u00a3)", "USD ($)", 100));
         assertEquals(179.802, conv.convert("GBP (\u00a3)", "AUD (A$)", 100));
         assertEquals(110.09, conv.convert("GBP (\u00a3)", "EUR (\u20ac)", 100));
 //        assertEquals(12792.4, conv.convert("GBP (\u00a3)", "JPY (\u00a5)", 100));
@@ -110,8 +109,7 @@ public class AppTest extends ApplicationTest {
         assertEquals(0.91431*max, conv.convert("USD ($)", "EUR (\u20ac)", max));
         assertEquals(106.306*max, conv.convert("USD ($)", "JPY (\u00a5)", max));
 
-        assertEquals(0.66932*max, conv.convert("AUD (A$)", "USD ($)", max));
-        assertEquals(0.91431*max, conv.convert("GBP (\u00a3)", "USD ($)", max));
+        assertEquals(1.20336*max, conv.convert("GBP (\u00a3)", "USD ($)", max));
         assertEquals(1.79802*max, conv.convert("GBP (\u00a3)", "AUD (A$)", max));
         assertEquals(1.1009*max, conv.convert("GBP (\u00a3)", "EUR (\u20ac)", max));
 //        assertEquals(127.924*max, conv.convert("GBP (\u00a3)", "JPY (\u00a5)", max));
@@ -151,7 +149,6 @@ public class AppTest extends ApplicationTest {
         assertEquals(0.91431*min, conv.convert("USD ($)", "EUR (\u20ac)", min));
         assertEquals(106.306*min, conv.convert("USD ($)", "JPY (\u00a5)", min));
 
-        assertEquals(0.66932*min, conv.convert("AUD (A$)", "USD ($)", min));
         assertEquals(0.91431*min, conv.convert("GBP (\u00a3)", "USD ($)", min));
         assertEquals(1.79802*min, conv.convert("GBP (\u00a3)", "AUD (A$)", min));
         assertEquals(1.1009*min, conv.convert("GBP (\u00a3)", "EUR (\u20ac)", min));
@@ -173,21 +170,18 @@ public class AppTest extends ApplicationTest {
         assertEquals(0.00860*min, conv.convert("JPY (\u00a5)", "EUR (\u20ac)", min));
     }
 
-    //Need to also somehow test for String input
-
-//    /**
-//     * Test for non-numeric input
-//     */
-//    @Test
-//    public void nonNumTest() {
-//        Converter conv = new Converter();
-//        conv.initializeCurrencies();
-//        double notNum = "hello";
-//        assertThrows(NumberFormatException.class, () -> {
-//            conv.convert("USD ($)", "USD ($)", "notNum");
-//        });
-//    }
-
+    /**
+     * Test for null input
+     */
+    @Test
+    public void notANumberTest() {
+        Converter conv = new Converter();
+        conv.initializeCurrencies();
+        Double nullDouble = Double.NaN;
+        assertThrows(NullPointerException.class, () -> {
+            conv.convert( "USD ($)", "USD ($)", nullDouble);
+        });
+    }
 
     /**
      * Test for null input
@@ -196,7 +190,7 @@ public class AppTest extends ApplicationTest {
     public void nullTest() {
         Converter conv = new Converter();
         conv.initializeCurrencies();
-        Double nullDouble = Double.NaN;
+        Double nullDouble = null;
         assertThrows(NullPointerException.class, () -> {
             conv.convert( "USD ($)", "USD ($)", nullDouble);
         });
