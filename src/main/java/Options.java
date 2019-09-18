@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.print.attribute.standard.NumberUp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Options {
@@ -93,17 +94,20 @@ public class Options {
                 if (firstCurrencyAmount.getText().trim().isEmpty()) {
                     response.setFill(Color.RED);
                     response.setText("Amount field cannot be empty");
-                } else if (Double.parseDouble(firstCurrencyAmount.getText().trim()) < 0){
-                        response.setFill(Color.RED);
-                        response.setText("Amount field cannot be less than 0.");
                 } else {
-                        double amount = Double.parseDouble(firstCurrencyAmount.getText());
-                        comboConvert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount,2,3,oneToOneGrid);
+                    double amount = Double.parseDouble(firstCurrencyAmount.getText());
+                    comboConvert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount,2,3,oneToOneGrid);
+                    if (amount < 0) {
+                        throw new IllegalArgumentException("Amount entered is less than 0.");
                     }
+                }
 
                 } catch (NumberFormatException e) {
                     response.setFill(Color.RED);
                     response.setText("Amount field cannot be a String");
+                } catch (IllegalArgumentException e) {
+                    response.setFill(Color.RED);
+                    response.setText("Amount field cannot be less than 0.");
                 }
             }
         });
@@ -111,10 +115,16 @@ public class Options {
             try {
                 double amount1 = Double.parseDouble(firstCurrencyAmount.getText());
                 comboConvert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount1,2,3,oneToOneGrid);
-            } catch (NumberFormatException e) {
-                response.setFill(Color.RED);
-                response.setText("Amount field cannot be a String");
-            }
+                if (amount1 < 0) {
+                    throw new IllegalArgumentException("Amount entered is less than 0.");
+                }
+        } catch (NumberFormatException e) {
+            response.setFill(Color.RED);
+            response.setText("Amount field cannot be a String");
+        } catch (IllegalArgumentException e) {
+            response.setFill(Color.RED);
+            response.setText("Amount field cannot be less than 0.");
+        }
         }
 
         });
@@ -208,17 +218,12 @@ public class Options {
                 } else {
                     try {
                         threeToOnecomboConvert((String) fromCurrencySymbols1.getValue(), (String) fromCurrencySymbols2.getValue(), (String) fromCurrencySymbols3.getValue(), (String) toCurrencySymbols2.getValue(), Double.parseDouble(firstCurrencyAmount.getText()), Double.parseDouble(secondCurrencyAmount.getText()), Double.parseDouble(thirdCurrencyAmount.getText()), 2, 4, manyToOneGrid);
-
                     } catch (NumberFormatException e) {
-                        if (Double.parseDouble(firstCurrencyAmount.getText()) < 0 |
-                                Double.parseDouble(secondCurrencyAmount.getText()) < 0 |
-                                Double.parseDouble(thirdCurrencyAmount.getText()) < 0) {
-                            response.setFill(Color.RED);
-                            response.setText("Amount cannot be a String.");
-                        }
                         response.setFill(Color.RED);
-                        response.setText("Amount cannot be a String.");
-
+                        response.setText("Amount input is invalid.");
+                    } catch (IllegalArgumentException e) {
+                        response.setFill(Color.RED);
+                        response.setText("Amount input is less than 0.");
                     }
                 }
             }
@@ -231,7 +236,7 @@ public class Options {
                     threeToOnecomboConvert((String) fromCurrencySymbols1.getValue(), (String) fromCurrencySymbols2.getValue(), (String) fromCurrencySymbols3.getValue(), (String) toCurrencySymbols2.getValue(), Double.parseDouble(firstCurrencyAmount.getText()), Double.parseDouble(secondCurrencyAmount.getText()), Double.parseDouble(thirdCurrencyAmount.getText()), 2, 4, manyToOneGrid);
                 } catch (NumberFormatException e) {
                     response.setFill(Color.RED);
-                    response.setText("Amount cannot be a String.");
+                    response.setText("Amount input is invalid.");
                 }
 
             }
@@ -243,7 +248,7 @@ public class Options {
                     threeToOnecomboConvert((String) fromCurrencySymbols1.getValue(), (String) fromCurrencySymbols2.getValue(), (String) fromCurrencySymbols3.getValue(), (String) toCurrencySymbols2.getValue(), Double.parseDouble(firstCurrencyAmount.getText()), Double.parseDouble(secondCurrencyAmount.getText()), Double.parseDouble(thirdCurrencyAmount.getText()), 2, 4, manyToOneGrid);
                 }   catch (NumberFormatException e) {
                     response.setFill(Color.RED);
-                    response.setText("Amount cannot be a String.");
+                    response.setText("Amount input is invalid.");
                 }
             }
 
@@ -254,7 +259,7 @@ public class Options {
                     threeToOnecomboConvert((String) fromCurrencySymbols1.getValue(), (String) fromCurrencySymbols2.getValue(), (String) fromCurrencySymbols3.getValue(), (String) toCurrencySymbols2.getValue(), Double.parseDouble(firstCurrencyAmount.getText()), Double.parseDouble(secondCurrencyAmount.getText()), Double.parseDouble(thirdCurrencyAmount.getText()), 2, 4, manyToOneGrid);
                 } catch (NumberFormatException e) {
                     response.setFill(Color.RED);
-                    response.setText("Amount cannot be a String.");
+                    response.setText("Amount input is invalid.");
                 }
             }
 
@@ -314,10 +319,10 @@ public class Options {
 ///        grid.setGridLinesVisible(true);
     }
     private static void comboConvert(String fromValue, String toValue, double amount, int colIndex, int rowIndex, GridPane grid){
-        double convertedAmount = Converter.convert(fromValue,toValue,amount);
+        double convertedAmount = Converter.convert(fromValue, toValue, amount);
         Text convertedCurrency = new Text();
         convertedCurrency.setText(Double.toString(convertedAmount));
-        Rectangle cover = new Rectangle(150,20,Color.BEIGE);
+        Rectangle cover = new Rectangle(150, 20, Color.BEIGE);
         grid.add(cover, colIndex, rowIndex);
         grid.add(convertedCurrency, colIndex, rowIndex);
     }
@@ -326,7 +331,9 @@ public class Options {
         double convertedAmount2 =  Converter.convert(fromValue2,toValue,amount2);
         double  convertedAmount3 =  Converter.convert(fromValue3,toValue,amount3);
 
-        double totalConvertedAmount = convertedAmount+convertedAmount2+convertedAmount3;
+        DecimalFormat df = new DecimalFormat("#.###");
+        double converted = convertedAmount+convertedAmount2+convertedAmount3;;
+        double totalConvertedAmount = Double.parseDouble(df.format(converted));
 
         Text convertedCurrency = new Text();
         convertedCurrency.setText(Double.toString(totalConvertedAmount));
