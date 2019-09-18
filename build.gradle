@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'application'
+    id 'jacoco'
 }
 
 version '1.0-SNAPSHOT'
@@ -33,6 +34,14 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    test.finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled = true
+        csv.enabled = true
+    }
 }
 
 mainClassName = 'App'
