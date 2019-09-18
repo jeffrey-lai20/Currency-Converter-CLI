@@ -20,7 +20,6 @@ class Converter {
         double converted = currencyExchangeRatesMap.get(selectedFrom+selectedTo)*amount;
         double convertedAmount = Double.parseDouble(df.format(converted));
 
-        System.out.println(convertedAmount);
         return convertedAmount;
     };
     static void initializeCurrencies() {

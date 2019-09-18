@@ -53,7 +53,7 @@ public class App extends Application {
 
         Options.showCurrencyRates(homePage);
 
-        Scene scene = new Scene(homePage, 1100, 360);
+        Scene scene = new Scene(homePage, 1110, 360);
 
         oneToOne.setOnAction(new EventHandler<ActionEvent>() {
             @Override
