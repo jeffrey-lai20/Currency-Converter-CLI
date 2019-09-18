@@ -58,7 +58,7 @@ public class AppTest extends ApplicationTest {
         assertEquals(10630.6, conv.convert("USD ($)", "JPY (\u00a5)", 100));
 
         assertEquals(66.932, conv.convert("AUD (A$)", "USD ($)", 100));
-        assertEquals(91.431, conv.convert("GBP (\u00a3)", "USD ($)", 100));
+        assertEquals(120.336, conv.convert("GBP (\u00a3)", "USD ($)", 100));
         assertEquals(179.802, conv.convert("GBP (\u00a3)", "AUD (A$)", 100));
         assertEquals(110.09, conv.convert("GBP (\u00a3)", "EUR (\u20ac)", 100));
 //        assertEquals(12792.4, conv.convert("GBP (\u00a3)", "JPY (\u00a5)", 100));
@@ -111,7 +111,7 @@ public class AppTest extends ApplicationTest {
         assertEquals(106.306*max, conv.convert("USD ($)", "JPY (\u00a5)", max));
 
         assertEquals(0.66932*max, conv.convert("AUD (A$)", "USD ($)", max));
-        assertEquals(0.91431*max, conv.convert("GBP (\u00a3)", "USD ($)", max));
+        assertEquals(1.20336*max, conv.convert("GBP (\u00a3)", "USD ($)", max));
         assertEquals(1.79802*max, conv.convert("GBP (\u00a3)", "AUD (A$)", max));
         assertEquals(1.1009*max, conv.convert("GBP (\u00a3)", "EUR (\u20ac)", max));
 //        assertEquals(127.924*max, conv.convert("GBP (\u00a3)", "JPY (\u00a5)", max));
