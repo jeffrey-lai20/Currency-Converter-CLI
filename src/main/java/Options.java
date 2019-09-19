@@ -95,6 +95,7 @@ public class Options {
                     response.setFill(Color.RED);
                     response.setText("Amount field cannot be empty");
                 } else {
+                    response.setText("");
                     double amount = Double.parseDouble(firstCurrencyAmount.getText());
                     comboConvert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount,2,3,oneToOneGrid);
                     if (amount < 0) {
@@ -113,20 +114,26 @@ public class Options {
         });
         firstCurrencyAmount.setOnKeyPressed((event) -> { if(event.getCode() == KeyCode.ENTER) {
             try {
-                double amount1 = Double.parseDouble(firstCurrencyAmount.getText());
-                comboConvert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount1,2,3,oneToOneGrid);
-                if (amount1 < 0) {
-                    throw new IllegalArgumentException("Amount entered is less than 0.");
+                if (firstCurrencyAmount.getText().trim().isEmpty()) {
+                    response.setFill(Color.RED);
+                    response.setText("Amount field cannot be empty");
+                } else {
+                    response.setText("");
+                    double amount1 = Double.parseDouble(firstCurrencyAmount.getText());
+                    comboConvert((String)fromCurrencySymbols.getValue(),(String)toCurrencySymbols.getValue(),amount1,2,3,oneToOneGrid);
+                    if (amount1 < 0) {
+                        throw new IllegalArgumentException("Amount entered is less than 0.");
+                    }
                 }
-        } catch (NumberFormatException e) {
-            response.setFill(Color.RED);
-            response.setText("Amount field cannot be a String");
-        } catch (IllegalArgumentException e) {
-            response.setFill(Color.RED);
-            response.setText("Amount field cannot be less than 0.");
-        }
-        }
 
+            } catch (NumberFormatException e) {
+                response.setFill(Color.RED);
+                response.setText("Amount field cannot be a String");
+            } catch (IllegalArgumentException e) {
+                response.setFill(Color.RED);
+                response.setText("Amount field cannot be less than 0.");
+            }
+        }
         });
         showCurrencyRates(oneToOneGrid);
         primaryStage.setScene(oneToOneScene);
@@ -217,6 +224,7 @@ public class Options {
                     response.setText("At least one field must be filled in");
                 } else {
                     try {
+                        response.setText("");
                         threeToOnecomboConvert((String) fromCurrencySymbols1.getValue(), (String) fromCurrencySymbols2.getValue(), (String) fromCurrencySymbols3.getValue(), (String) toCurrencySymbols2.getValue(), Double.parseDouble(firstCurrencyAmount.getText()), Double.parseDouble(secondCurrencyAmount.getText()), Double.parseDouble(thirdCurrencyAmount.getText()), 2, 4, manyToOneGrid);
                     } catch (NumberFormatException e) {
                         response.setFill(Color.RED);
@@ -233,6 +241,7 @@ public class Options {
         firstCurrencyAmount.setOnKeyPressed((event) -> {
             if (event.getCode() == KeyCode.ENTER) {
                 try {
+                    response.setText("");
                     threeToOnecomboConvert((String) fromCurrencySymbols1.getValue(), (String) fromCurrencySymbols2.getValue(), (String) fromCurrencySymbols3.getValue(), (String) toCurrencySymbols2.getValue(), Double.parseDouble(firstCurrencyAmount.getText()), Double.parseDouble(secondCurrencyAmount.getText()), Double.parseDouble(thirdCurrencyAmount.getText()), 2, 4, manyToOneGrid);
                 } catch (NumberFormatException e) {
                     response.setFill(Color.RED);
@@ -245,6 +254,7 @@ public class Options {
         secondCurrencyAmount.setOnKeyPressed((event) -> {
             if (event.getCode() == KeyCode.ENTER) {
                 try {
+                    response.setText("");
                     threeToOnecomboConvert((String) fromCurrencySymbols1.getValue(), (String) fromCurrencySymbols2.getValue(), (String) fromCurrencySymbols3.getValue(), (String) toCurrencySymbols2.getValue(), Double.parseDouble(firstCurrencyAmount.getText()), Double.parseDouble(secondCurrencyAmount.getText()), Double.parseDouble(thirdCurrencyAmount.getText()), 2, 4, manyToOneGrid);
                 }   catch (NumberFormatException e) {
                     response.setFill(Color.RED);
@@ -256,6 +266,7 @@ public class Options {
         thirdCurrencyAmount.setOnKeyPressed((event) -> {
             if (event.getCode() == KeyCode.ENTER) {
                 try {
+                    response.setText("");
                     threeToOnecomboConvert((String) fromCurrencySymbols1.getValue(), (String) fromCurrencySymbols2.getValue(), (String) fromCurrencySymbols3.getValue(), (String) toCurrencySymbols2.getValue(), Double.parseDouble(firstCurrencyAmount.getText()), Double.parseDouble(secondCurrencyAmount.getText()), Double.parseDouble(thirdCurrencyAmount.getText()), 2, 4, manyToOneGrid);
                 } catch (NumberFormatException e) {
                     response.setFill(Color.RED);
@@ -321,7 +332,7 @@ public class Options {
     private static void comboConvert(String fromValue, String toValue, double amount, int colIndex, int rowIndex, GridPane grid){
         double convertedAmount = Converter.convert(fromValue, toValue, amount);
         Text convertedCurrency = new Text();
-        convertedCurrency.setText(Double.toString(convertedAmount));
+        convertedCurrency.setText(Double.toString(convertedAmount)+" "+ toValue);
         Rectangle cover = new Rectangle(150, 20, Color.BEIGE);
         grid.add(cover, colIndex, rowIndex);
         grid.add(convertedCurrency, colIndex, rowIndex);
@@ -336,7 +347,7 @@ public class Options {
         double totalConvertedAmount = Double.parseDouble(df.format(converted));
 
         Text convertedCurrency = new Text();
-        convertedCurrency.setText(Double.toString(totalConvertedAmount));
+        convertedCurrency.setText(Double.toString(totalConvertedAmount)+" "+ toValue);
         Rectangle cover = new Rectangle(150,20,Color.BEIGE);
         grid.add(cover, colIndex, rowIndex);
         grid.add(convertedCurrency, colIndex, rowIndex);
