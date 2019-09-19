@@ -45,11 +45,8 @@ public class App extends Application {
         Button oneToOne = new Button("One to one conversion");
         homePage.add(oneToOne, 1, 2);
 
-
         Button manyToOne = new Button("Combination conversion(up to 3)");
         homePage.add(manyToOne, 3, 2);
-
-
 
         Options.showCurrencyRates(homePage);
 
